@@ -35,6 +35,10 @@ Linux host, also install `gcc-aarch64-linux-gnu` and
 GitHub Actions uses the native ARM64 runner and uploads the outputs as an
 artifact without publishing a release.
 
+The script fetches AOSP's complete mkbootimg at pinned commit
+`d2bb0af5ba6d3198a3e99529c97eda1be0b5a093`, including its Python modules.
+Build logs are uploaded separately, even when compilation or packaging fails.
+
 Outputs are in `out/artifacts/`: the dual-boot image (`root=PARTLABEL=linux`),
 matching `linux-xiaomi-sheng.deb`, configuration, build provenance and hashes.
 The script only builds files; it does not flash or install them.

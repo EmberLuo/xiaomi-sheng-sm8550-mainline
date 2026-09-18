@@ -22,15 +22,23 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential flex bison libssl-dev libelf-dev bc kmod cpio zstd mkbootimg
+          sudo apt-get install -y build-essential flex bison libssl-dev libelf-dev bc kmod cpio zstd python3 git
       - name: Build kernel and package
+        shell: bash
         run: bash scripts/build-sheng.sh 2>&1 | tee build-sheng.log
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - name: Upload kernel bundle
+        uses: actions/upload-artifact@v4
         with:
           name: sheng-7.2.6-ifpc-off-iris-${{ github.sha }}
+          path: out/artifacts/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload build log
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sheng-build-log-${{ github.sha }}
           path: |
-            out/artifacts/
             out/.config
             build-sheng.log
           include-hidden-files: true
